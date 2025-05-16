@@ -1,0 +1,12 @@
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.csproj.AssemblyReference.cache
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.Properties.Resources.resources
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.csproj.GenerateResource.cache
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.csproj.CoreCompileInputs.cache
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\FloorHouse.exe.config
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\FloorHouse.exe
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\FloorHouse.pdb
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.exe
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.pdb
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.View.MainForm.resources
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.View.MenuForm.resources
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\heart.png

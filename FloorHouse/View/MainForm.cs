@@ -1,8 +1,13 @@
 ﻿using FloorHouse.Controller;
 using FloorHouse.Model;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace FloorHouse.View
 {
@@ -13,6 +18,7 @@ namespace FloorHouse.View
         int GetFormWidth();
         int GetFormHeight();
         void UpdateView();
+        void UpdateDebris(List<HouseGameModel.Debris> debrisList);
     }
 
     public partial class MainForm : Form, IMainView
@@ -20,16 +26,40 @@ namespace FloorHouse.View
         private GameController _controller;
         private Timer _gameTimer;
         private MenuForm _menuForm;
+        private HouseGameModel _model;
         private Label lblCurrent;
         private Label lblBest;
         private Button backButton;
-        private HouseGameModel model;
-
         private int _cameraOffset;
+        private List<HouseGameModel.Debris> _debrisList = new List<HouseGameModel.Debris>();
+        private Random _rand = new Random();
+
+        private int _perfectStreak = 0;
+        private int _perfectDisplayCounter = 0;
+        private const int PerfectDisplayDuration = 540;
+
+        private Image _heartImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\heart.png");
+        private Image brickFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\floorBrick.png");
+        private Image brickDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\doorBrick.png");
+        private Image blueFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\floorGreen.png");
+        private Image blueDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\doorGreen.png");
+        
+        private Image _currentFloorImage;
+        private Image _currentDoorImage;
+        private bool _useBlueTheme;
+
 
         public MainForm(HouseGameModel model, MenuForm menuForm)
         {
             InitializeComponent();
+
+            _model = model;
+            _model.FormWidth = this.ClientSize.Width;
+            _model.FormHeight = this.ClientSize.Height;
+
+            _useBlueTheme = new Random().Next(2) == 0;
+            SetThemeImages();
+
             _controller = new GameController(model, this);
             _menuForm = menuForm;
 
@@ -38,13 +68,22 @@ namespace FloorHouse.View
             SetupTimer();
             SetupKeyboard();
 
+
+
             _controller.Initialize();
             _gameTimer.Start();
+
+            _controller.PerfectDrop += (streak) =>
+            {
+                _perfectStreak = streak;
+                _perfectDisplayCounter = PerfectDisplayDuration;
+                UpdateView();
+            };
         }
 
         private void InitializeComponent()
         {
-            ClientSize = new Size(500, 750);
+            ClientSize = new Size(600, 850);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Floor House";
             DoubleBuffered = true;
@@ -63,9 +102,9 @@ namespace FloorHouse.View
             backButton.FlatAppearance.BorderSize = 0;
             backButton.Click += (s, e) =>
             {
-            _gameTimer.Stop();
-            Hide();
-            _menuForm?.Show();
+                _gameTimer.Stop();
+                Hide();
+                _menuForm?.Show();
             };
             Controls.Add(backButton);
         }
@@ -78,7 +117,7 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 8, FontStyle.Bold),
                 AutoSize = true,
                 Top = 60,
-                Left = 363
+                Left = 420
             };
 
             lblBest = new Label
@@ -87,7 +126,7 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 8, FontStyle.Bold),
                 AutoSize = true,
                 Top = 20,
-                Left = 363
+                Left = 420
             };
 
             Controls.Add(lblCurrent);
@@ -106,7 +145,15 @@ namespace FloorHouse.View
         private void SetupTimer()
         {
             _gameTimer = new Timer { Interval = 1 };
-            _gameTimer.Tick += (s, e) => _controller.Update();
+            _gameTimer.Tick += (s, e) =>
+            {
+                _controller.Update();
+                if (_perfectDisplayCounter > 0)
+                {
+                    _perfectDisplayCounter--;
+                    Invalidate();
+                }
+            };
         }
 
         private void SetupKeyboard()
@@ -140,10 +187,147 @@ namespace FloorHouse.View
         public int GetFormWidth() => ClientSize.Width;
         public int GetFormHeight() => ClientSize.Height;
 
+        public void UpdateDebris(List<HouseGameModel.Debris> debrisList)
+        {
+            _debrisList = debrisList;
+        }
+
+        private void SetThemeImages()
+        {
+            if (_useBlueTheme)
+            {
+                _currentFloorImage = blueFloorImage;
+                _currentDoorImage = blueDoorImage;
+            }
+            else
+            {
+                _currentFloorImage = brickFloorImage;
+                _currentDoorImage = brickDoorImage;
+            }
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            if (_model != null)
+            {
+                _model.FormWidth = this.ClientSize.Width;
+                _model.FormHeight = this.ClientSize.Height;
+                Invalidate();
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            _controller?.Draw(e.Graphics);
+            var g = e.Graphics;
+
+            // Получаем данные фона
+            var (bgColors, starPositions, starSizes, starOpacity) = _controller.GetBackgroundData();
+
+            // Рисуем градиентный фон
+            using (var bgBrush = new LinearGradientBrush(
+                new Point(0, 0),
+                new Point(0, GetFormHeight()),
+                bgColors[0],
+                bgColors[1]))
+            {
+                g.FillRectangle(bgBrush, 0, 0, GetFormWidth(), GetFormHeight());
+            }
+
+            // Рисуем звезды если нужно
+            if (starOpacity > 0)
+            {
+                DrawStars(g, starPositions, starSizes, starOpacity);
+            }
+
+            // Draw background
+            g.TranslateTransform(0, _cameraOffset);
+
+            // Draw ground
+            g.FillRectangle(Brushes.Green, 0, GetFormHeight() - 20, GetFormWidth(), 20);
+
+            // Draw lives
+            int heartSize = 40;
+            int spacing = 15;
+            int totalWidth = _controller.Lives * heartSize + (_controller.Lives - 1) * spacing;
+            int startX = (GetFormWidth() - totalWidth) / 2;
+            int heartY = 10 - _cameraOffset;
+
+            for (int i = 0; i < _controller.Lives; i++)
+                g.DrawImage(_heartImage, startX + i * (heartSize + spacing), heartY, heartSize, heartSize);
+
+            // Draw floors
+            foreach (var floor in _controller.PlacedFloors.Select((value, index) => (value, index)))
+            {
+                if (floor.index == 0)
+                    g.DrawImage(_currentDoorImage, floor.value);
+                else
+                    g.DrawImage(_currentFloorImage, floor.value);
+            }
+
+            // Draw current floor
+            int drawCurrentY = _controller.CurrentY - _cameraOffset;
+            int floorCenterX = _controller.CurrentX + _controller.FloorWidth / 2;
+
+            // Draw rope
+            int HookX = GetFormWidth() / 2;
+            int HookY = -_cameraOffset;
+
+            // Draw debris
+            foreach (var debris in _debrisList)
+            {
+                float x = debris.X;
+                float y = debris.Y - _cameraOffset;
+                int size = debris.Size;
+                g.FillRectangle(Brushes.Gray, x, y, size, size);
+            }
+
+            int pivotX = GetFormWidth() / 2;
+            int pivotY = GetFormHeight() - 20 - _cameraOffset;
+
+            g.TranslateTransform(pivotX, pivotY);
+            g.RotateTransform(_controller.TowerAngle * 180f / (float)Math.PI);
+            g.TranslateTransform(-pivotX, -pivotY);
+
+            if (!_controller.IsFalling)
+                g.DrawLine(Pens.Black, HookX, HookY, floorCenterX, drawCurrentY);
+
+            // Draw current floor image
+            if (_controller.PlacedFloors.Count == 0)
+                g.DrawImage(_currentDoorImage, _controller.CurrentX, drawCurrentY, _controller.FloorWidth, _controller.FloorHeight);
+            else
+                g.DrawImage(_currentFloorImage, _controller.CurrentX, drawCurrentY, _controller.FloorWidth, _controller.FloorHeight);
+            
+            if (_perfectDisplayCounter > 0 && _perfectStreak > 0)
+            {
+                string text = $"ИДЕАЛЬНО x{_perfectStreak}! +{_perfectStreak * 3}";
+                SizeF textSize = g.MeasureString(text, new Font("Press Start 2P", 16, FontStyle.Bold));
+                float x = (GetFormWidth() - textSize.Width) / 2;
+                float y = 100 - _cameraOffset;
+
+                // Тень текста
+                g.DrawString(text, new Font("Press Start 2P", 16, FontStyle.Bold), Brushes.Black, x + 2, y + 2);
+                // Основной текст
+                g.DrawString(text, new Font("Press Start 2P", 16, FontStyle.Bold), Brushes.Gold, x, y);
+
+                _perfectDisplayCounter--;
+            }
+        }
+
+        private void DrawStars(Graphics g, Point[] positions, int[] sizes, float opacity)
+        {
+            int visibleStars = (int)(positions.Length * opacity);
+            using (var starBrush = new SolidBrush(Color.FromArgb((int)(200 * opacity), Color.White)))
+            {
+                for (int i = 0; i < visibleStars; i++)
+                {
+                    int x = positions[i].X;
+                    int y = (positions[i].Y - (int)(_cameraOffset * 0.3f)) % (GetFormHeight() * 2);
+                    if (y < -10) y += GetFormHeight() * 2; // Чтобы звезды появлялись сверху
+
+                    g.FillEllipse(starBrush, x, y, sizes[i], sizes[i]);
+                }
+            }
         }
     }
 }

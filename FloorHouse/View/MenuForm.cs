@@ -10,8 +10,8 @@ namespace FloorHouse.View
     public partial class MenuForm : Form, IMenuView
     {
         private readonly MenuController _controller;
-        private const int FormW = 500;
-        private const int FormH = 750;
+        private const int FormW = 600;
+        private const int FormH = 850;
 
         public interface IMenuView
         {
@@ -40,6 +40,7 @@ namespace FloorHouse.View
             Controls.Add(settingsButton);
             Controls.Add(exitButton);
 
+            titleLabel.Left = (FormW - titleLabel.Width) / 2;
             playButton.Left = (ClientSize.Width - playButton.Width) / 2;
             settingsButton.Left = (ClientSize.Width - settingsButton.Width) / 2;
             exitButton.Left = (ClientSize.Width - exitButton.Width) / 2;
@@ -53,7 +54,6 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 20),
                 AutoSize = true,
                 Top = 50,
-                Left = (FormW - 300) / 2,
                 FlatStyle = FlatStyle.Flat
             };
         }
@@ -65,7 +65,7 @@ namespace FloorHouse.View
                 Text = "Играть",
                 Font = new Font("Press Start 2P", 30),
                 AutoSize = true,
-                Top = 270,
+                Top = 290,
                 FlatStyle = FlatStyle.Flat
             };
             button.Click += (s, e) => _controller.StartGame();
@@ -79,7 +79,7 @@ namespace FloorHouse.View
             {
                 Text = "Настройки",
                 Font = new Font("Press Start 2P", 14),
-                Top = 340,
+                Top = 380,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };
@@ -94,7 +94,7 @@ namespace FloorHouse.View
             {
                 Text = "Выход",
                 Font = new Font("Press Start 2P", 12),
-                Top = 390,
+                Top = 440,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };

@@ -9,4 +9,3 @@ C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.exe
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.pdb
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.View.MainForm.resources
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\FloorHouse.View.MenuForm.resources
-C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\heart.png

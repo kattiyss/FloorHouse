@@ -7,6 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Forms;
 using System.Drawing;
 using FloorHouse.Controller;
+using Font = System.Drawing.Font;
 
 namespace FloorHouse.View
 {
@@ -38,7 +39,7 @@ namespace FloorHouse.View
                 Text = $"Текущий рекорд: {Properties.Settings.Default.HighScore}",
                 Font = new Font("Press Start 2P", 9),
                 AutoSize = true,
-                Location = new Point(85, 40)
+                Location = new Point(45, 40)
             };
             Controls.Add(lblScore);
 

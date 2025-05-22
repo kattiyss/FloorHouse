@@ -18,3 +18,4 @@ C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.pd
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.genruntimeconfig.cache
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\ref\FloorHouse.dll
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.SettingsForm.resources
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.EndForm.resources

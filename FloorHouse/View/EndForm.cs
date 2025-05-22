@@ -8,8 +8,8 @@ namespace FloorHouse.View
     public partial class EndForm : Form, IEndView
     {
         private EndController _controller;
-        private const int FormW = 500;
-        private const int FormH = 750;
+        private const int FormW = 600;
+        private const int FormH = 850;
 
         public EndForm(MenuForm menuForm)
         {
@@ -43,7 +43,7 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 20),
                 AutoSize = true,
                 Top = 50,
-                Left = (FormW - 430),
+                Left = (FormW - 520),
                 FlatStyle = FlatStyle.Flat
             };
         }
@@ -54,7 +54,7 @@ namespace FloorHouse.View
             {
                 Text = "Начать заново",
                 Font = new Font("Press Start 2P", 20),
-                Top = 270,
+                Top = 310,
                 Left = 65,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
@@ -70,7 +70,7 @@ namespace FloorHouse.View
             {
                 Text = "Меню",
                 Font = new Font("Press Start 2P", 20),
-                Top = 340,
+                Top = 380,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };

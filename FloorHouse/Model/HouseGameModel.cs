@@ -37,8 +37,7 @@ namespace FloorHouse.Model
         private double PendulumAngle = Math.PI / 3;
         private double AngularVelocity;
         private double AngularAcceleration;
-        private const double GravityConst = 0.2;
-        private double CurrentGravityConst;
+        private double Gravity = 0.2;
 
         // Падение
         public int CurrentX { get; private set; }
@@ -73,7 +72,6 @@ namespace FloorHouse.Model
         {
             FormWidth = formWidth;
             FormHeight = formHeight;
-            CurrentGravityConst = GravityConst;
             InitializeGame();
             InitializeStars(200);
         }
@@ -95,7 +93,7 @@ namespace FloorHouse.Model
             PendulumAngle = Math.PI / 3;
             AngularVelocity = 0;
             AngularAcceleration = 0;
-            CurrentGravityConst = GravityConst;
+            Gravity = 0.2;
 
             Lives = 3;
 
@@ -182,9 +180,9 @@ namespace FloorHouse.Model
                 cameraLiftProgress = 0;
 
                 // Ускорение маятника каждые 10 этажей
-                if (PlacedFloors.Count % 10 == 0)
+                if (PlacedFloors.Count % 10 == 0 && PlacedFloors.Count < 50)
                 {
-                    CurrentGravityConst = GravityConst * (1 + PlacedFloors.Count / 10 * 0.2);
+                    Gravity += 0.2;
                 }
 
                 if (_currentScore > Properties.Settings.Default.HighScore)
@@ -201,7 +199,7 @@ namespace FloorHouse.Model
 
         private void UpdateShaking()
         {
-            AngularAcceleration = -GravityConst / RopeLength * Math.Sin(PendulumAngle);
+            AngularAcceleration = -Gravity / RopeLength * Math.Sin(PendulumAngle);
             AngularVelocity += AngularAcceleration;
             PendulumAngle += AngularVelocity;
             CurrentX = HookX + (int)(RopeLength * Math.Sin(PendulumAngle)) - FloorWidth / 2;
@@ -210,7 +208,7 @@ namespace FloorHouse.Model
 
         private void UpdateCamera()
         {
-            if (cameraLifting && PlacedFloors.Count > 3)
+            if (cameraLifting && PlacedFloors.Count > 2)
             {
                 CameraOffset += cameraLiftStep;
                 cameraLiftProgress += cameraLiftStep;

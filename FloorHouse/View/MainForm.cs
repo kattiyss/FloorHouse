@@ -38,15 +38,19 @@ namespace FloorHouse.View
         private int _perfectDisplayCounter = 0;
         private const int PerfectDisplayDuration = 540;
 
-        private Image _heartImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\heart.png");
-        private Image brickFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\floorBrick.png");
-        private Image brickDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\doorBrick.png");
-        private Image blueFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\floorGreen.png");
-        private Image blueDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Images\\doorGreen.png");
-        
+        private Image _heartImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\heart.png");
+        private Image brickFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorBrick.png");
+        private Image brickDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorBrick.png");
+        private Image pinkFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorPink.png");
+        private Image pinkDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorPink.png");
+        private Image yellowFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorYellow.png");
+        private Image yellowDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorYellow.png");
+        private Image stoneFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorStone.png");
+        private Image stoneDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorStone.png");
+
         private Image _currentFloorImage;
         private Image _currentDoorImage;
-        private bool _useBlueTheme;
+        private bool useAnotherTheme;
 
 
         public MainForm(HouseGameModel model, MenuForm menuForm)
@@ -57,7 +61,6 @@ namespace FloorHouse.View
             _model.FormWidth = this.ClientSize.Width;
             _model.FormHeight = this.ClientSize.Height;
 
-            _useBlueTheme = new Random().Next(2) == 0;
             SetThemeImages();
 
             _controller = new GameController(model, this);
@@ -194,16 +197,19 @@ namespace FloorHouse.View
 
         private void SetThemeImages()
         {
-            if (_useBlueTheme)
+
+            var themes = new List<(Image floor, Image door)>()
             {
-                _currentFloorImage = blueFloorImage;
-                _currentDoorImage = blueDoorImage;
-            }
-            else
-            {
-                _currentFloorImage = brickFloorImage;
-                _currentDoorImage = brickDoorImage;
-            }
+                (brickFloorImage, brickDoorImage),   // Тема 1: кирпичная
+                (pinkFloorImage, pinkDoorImage),     // Тема 2: розовая
+                (yellowFloorImage, yellowDoorImage), // Тема 3: желтая
+                (stoneFloorImage, stoneDoorImage)    // Тема 4: каменная
+            };
+
+            var randomTheme = themes[_rand.Next(themes.Count)];
+
+            _currentFloorImage = randomTheme.floor;
+            _currentDoorImage = randomTheme.door;
         }
 
         protected override void OnResize(EventArgs e)

@@ -19,17 +19,18 @@ namespace FloorHouse.Controller
         private readonly IEndView _view;
         private MenuForm _menuForm;
 
-        public EndController(IEndView view)
+        public EndController(IEndView view, MenuForm menuForm)
         {
             _view = view;
+            _menuForm = menuForm;
         }
 
         public void Retry()
         {
-            var model = new HouseGameModel(500, 750);
+            var model = new HouseGameModel(600, 850);
             var mainForm = new MainForm(model, _menuForm);
-            mainForm.Show();
 
+            mainForm.Show();
             _view.CloseEnd();
         }
 

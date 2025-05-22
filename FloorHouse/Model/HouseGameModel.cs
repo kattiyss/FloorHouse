@@ -124,7 +124,7 @@ namespace FloorHouse.Model
             CurrentY += FallSpeed;
             TargetY = PlacedFloors.Count == 0
                 ? FormHeight - 20
-                : PlacedFloors[PlacedFloors.Count - 1].Y;
+                : PlacedFloors[^1].Y;
 
             if (CurrentY >= TargetY)
             {
@@ -134,7 +134,7 @@ namespace FloorHouse.Model
 
                 if (PlacedFloors.Count > 0)
                 {
-                    var last = PlacedFloors[PlacedFloors.Count - 1];
+                    var last = PlacedFloors[^1];
 
                     if (CurrentX == last.X)
                     {
@@ -143,7 +143,6 @@ namespace FloorHouse.Model
                         PerfectDrop?.Invoke(PerfectStreak);
                     }
 
-                    // Нормальное падение
                     else if (Math.Abs(CurrentX - last.X) <= NormalShift)
                     {
                         PerfectStreak = 0;
@@ -179,10 +178,9 @@ namespace FloorHouse.Model
                 cameraLifting = true;
                 cameraLiftProgress = 0;
 
-                // Ускорение маятника каждые 10 этажей
-                if (PlacedFloors.Count % 10 == 0 && PlacedFloors.Count < 50)
+                if (PlacedFloors.Count % 15 == 0 && Gravity < 2)
                 {
-                    Gravity += 0.2;
+                    Gravity += 0.1;
                 }
 
                 if (_currentScore > Properties.Settings.Default.HighScore)
@@ -229,7 +227,7 @@ namespace FloorHouse.Model
             TowerAngularVelocity += TowerAngularAcceleration;
             TowerAngularVelocity *= TowerDamping;
             TowerAngle += TowerAngularVelocity;
-            TowerAngle = Clamp(TowerAngle, -MaxTowerAngle, MaxTowerAngle);
+            TowerAngle = Math.Clamp(TowerAngle, -MaxTowerAngle, MaxTowerAngle);
             UpdateDebris();
         }
 
@@ -237,7 +235,7 @@ namespace FloorHouse.Model
         {
             if (!IsFalling)
             {
-                TargetY = PlacedFloors.Count == 0 ? FormHeight - 20 : PlacedFloors[PlacedFloors.Count - 1].Y;
+                TargetY = PlacedFloors.Count == 0 ? FormHeight - 20 : PlacedFloors[^1].Y;
                 IsFalling = true;
                 FallSpeed = 0;
                 StateChanged?.Invoke();
@@ -254,7 +252,7 @@ namespace FloorHouse.Model
         {
             if (PlacedFloors.Count == 0) return;
 
-            var lastFloor = PlacedFloors[PlacedFloors.Count - 1];
+            var lastFloor = PlacedFloors[^1];
             int relativeTop = lastFloor.Y - CameraOffset;
 
             if (relativeTop <= 350)
@@ -270,13 +268,6 @@ namespace FloorHouse.Model
             PendulumAngle = Math.PI / 3;
             AngularVelocity = 0;
             AngularAcceleration = 0;
-        }
-
-        private float Clamp(float value, float min, float max)
-        {
-            if (value < min) return min;
-            if (value > max) return max;
-            return value;
         }
 
         public class Debris
@@ -325,7 +316,7 @@ namespace FloorHouse.Model
 
         private Color LerpColor(Color from, Color to, float amount)
         {
-            amount = Clamp(amount, 0, 1);
+            amount = Math.Clamp(amount, 0, 1);
             return Color.FromArgb(
                 (int)(from.A + (to.A - from.A) * amount),
                 (int)(from.R + (to.R - from.R) * amount),
@@ -341,21 +332,21 @@ namespace FloorHouse.Model
             // Определяем целевые цвета
             Color[] targetColors = progress switch
             {
-                < 0.2f => new[] {
+                < 0.15f => new[] {
                 Color.LightCoral,
-                LerpColor(Color.LightYellow, Color.LightPink, progress / 0.2f)
+                LerpColor(Color.LightYellow, Color.LightPink, progress / 0.15f)
             },
-                < 0.35f => new[] {
-                LerpColor(Color.LightCoral, Color.LightSalmon, (progress - 0.2f) / 0.2f),
-                LerpColor(Color.LightPink, Color.Plum, (progress - 0.2f) / 0.2f)
+                < 0.25f => new[] {
+                LerpColor(Color.LightCoral, Color.LightSalmon, (progress - 0.15f) / 0.15f),
+                LerpColor(Color.LightPink, Color.Plum, (progress - 0.15f) / 0.15f)
             },
-                < 0.5f => new[] {
-                LerpColor(Color.LightSalmon, Color.RoyalBlue, (progress - 0.35f) / 0.2f),
-                LerpColor(Color.Plum, Color.MediumSlateBlue, (progress - 0.35f) / 0.2f)
+                < 0.4f => new[] {
+                LerpColor(Color.LightSalmon, Color.RoyalBlue, (progress - 0.25f) / 0.15f),
+                LerpColor(Color.Plum, Color.MediumSlateBlue, (progress - 0.25f) / 0.15f)
             },
                 _ => new[] {
-                LerpColor(Color.RoyalBlue, Color.DarkBlue, (progress - 0.5f) / 0.2f),
-                LerpColor(Color.MediumSlateBlue, Color.MidnightBlue, (progress - 0.5f) / 0.2f)
+                LerpColor(Color.RoyalBlue, Color.DarkBlue, (progress - 0.4f) / 0.15f),
+                LerpColor(Color.MediumSlateBlue, Color.MidnightBlue, (progress - 0.4f) / 0.15f)
             }
             };
 
@@ -365,7 +356,7 @@ namespace FloorHouse.Model
                 _currentBgColors[i] = LerpColor(_currentBgColors[i], targetColors[i], 0.05f);
             }
 
-            float starOpacity = Clamp((floorCount - 50) / 50f, 0, 1);
+            float starOpacity = Math.Clamp((floorCount - 40) / 40f, 0, 1);
 
             return (_currentBgColors, _starPositions, _starSizes, starOpacity);
         }

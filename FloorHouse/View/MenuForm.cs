@@ -51,7 +51,7 @@ namespace FloorHouse.View
             return new Label
             {
                 Text = "Floor House",
-                Font = new Font("Press Start 2P", 20),
+                Font = new Font("Press Start 2P", 25),
                 AutoSize = true,
                 Top = 50,
                 FlatStyle = FlatStyle.Flat
@@ -78,8 +78,8 @@ namespace FloorHouse.View
             var button = new Button
             {
                 Text = "Настройки",
-                Font = new Font("Press Start 2P", 14),
-                Top = 380,
+                Font = new Font("Press Start 2P", 16),
+                Top = 370,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };
@@ -93,8 +93,8 @@ namespace FloorHouse.View
             var button = new Button
             {
                 Text = "Выход",
-                Font = new Font("Press Start 2P", 12),
-                Top = 440,
+                Font = new Font("Press Start 2P", 15),
+                Top = 430,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };

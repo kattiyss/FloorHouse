@@ -19,6 +19,10 @@ namespace FloorHouse.View
         int GetFormHeight();
         void UpdateView();
         void UpdateDebris(List<HouseGameModel.Debris> debrisList);
+
+        event Action RequestExit;
+        bool ConfirmExit();
+        void ExitApplication();
     }
 
     public partial class MainForm : Form, IMainView
@@ -33,6 +37,7 @@ namespace FloorHouse.View
         private int _cameraOffset;
         private List<HouseGameModel.Debris> _debrisList = new List<HouseGameModel.Debris>();
         private Random _rand = new Random();
+        public event Action RequestExit;
 
         private int _perfectStreak = 0;
         private int _perfectDisplayCounter = 0;
@@ -41,16 +46,15 @@ namespace FloorHouse.View
         private Image _heartImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\heart.png");
         private Image brickFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorBrick.png");
         private Image brickDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorBrick.png");
-        private Image pinkFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorPink.png");
-        private Image pinkDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorPink.png");
+        private Image blueFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorBlue.png");
+        private Image blueDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorBlue.png");
         private Image yellowFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorYellow.png");
         private Image yellowDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorYellow.png");
         private Image stoneFloorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\floorStone.png");
         private Image stoneDoorImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\doorStone.png");
-
+        private Image backgroundImage = Image.FromFile("C:\\Users\\kattiyss\\source\\repos\\FloorHouse\\Themes\\grass.png");
         private Image _currentFloorImage;
         private Image _currentDoorImage;
-        private bool useAnotherTheme;
 
 
         public MainForm(HouseGameModel model, MenuForm menuForm)
@@ -95,7 +99,7 @@ namespace FloorHouse.View
             backButton = new Button
             {
                 Text = "Назад",
-                Font = new Font("Press Start 2P", 10),
+                Font = new Font("Press Start 2P", 12),
                 Top = 10,
                 Left = 10,
                 AutoSize = true,
@@ -117,19 +121,19 @@ namespace FloorHouse.View
             lblCurrent = new Label
             {
                 Text = "Счёт: 0",
-                Font = new Font("Press Start 2P", 8, FontStyle.Bold),
+                Font = new Font("Press Start 2P", 10, FontStyle.Bold),
                 AutoSize = true,
                 Top = 60,
-                Left = 420
+                Left = 430
             };
 
             lblBest = new Label
             {
                 Text = "Рекорд: " + Properties.Settings.Default.HighScore,
-                Font = new Font("Press Start 2P", 8, FontStyle.Bold),
+                Font = new Font("Press Start 2P", 10, FontStyle.Bold),
                 AutoSize = true,
                 Top = 20,
-                Left = 420
+                Left = 430
             };
 
             Controls.Add(lblCurrent);
@@ -158,7 +162,6 @@ namespace FloorHouse.View
                 }
             };
         }
-
         private void SetupKeyboard()
         {
             KeyPreview = true;
@@ -166,8 +169,18 @@ namespace FloorHouse.View
             {
                 if (e.KeyCode == Keys.Space)
                     _controller.DropFloor();
+                else if (e.KeyCode == Keys.Escape)
+                    RequestExit?.Invoke();
             };
         }
+
+        public bool ConfirmExit()
+        {
+            return MessageBox.Show("Хотите выйти из игры?", "Подтверждение выхода",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        public void ExitApplication() => Application.Exit();
 
         public void UpdateView()
         {
@@ -201,8 +214,8 @@ namespace FloorHouse.View
             var themes = new List<(Image floor, Image door)>()
             {
                 (brickFloorImage, brickDoorImage),   // Тема 1: кирпичная
-                (pinkFloorImage, pinkDoorImage),     // Тема 2: розовая
-                (yellowFloorImage, yellowDoorImage), // Тема 3: желтая
+                (blueFloorImage, blueDoorImage),     // Тема 2: синяя
+                (yellowFloorImage, yellowDoorImage), // Тема 3: жёлтая
                 (stoneFloorImage, stoneDoorImage)    // Тема 4: каменная
             };
 
@@ -250,10 +263,11 @@ namespace FloorHouse.View
             g.TranslateTransform(0, _cameraOffset);
 
             // Draw ground
-            g.FillRectangle(Brushes.Green, 0, GetFormHeight() - 20, GetFormWidth(), 20);
+            g.FillRectangle(Brushes.DarkGreen, 0, GetFormHeight() - 21, GetFormWidth(), 21);
+            g.DrawImage(backgroundImage, 0, GetFormHeight() - 80, GetFormWidth(), 60);
 
             // Draw lives
-            int heartSize = 40;
+            int heartSize = 60;
             int spacing = 15;
             int totalWidth = _controller.Lives * heartSize + (_controller.Lives - 1) * spacing;
             int startX = (GetFormWidth() - totalWidth) / 2;

@@ -36,6 +36,8 @@ namespace FloorHouse.Controller
             _model.LivesChanged += lives => UpdateLives?.Invoke(lives);
             _model.CameraMoveRequested += () => _view.MoveCamera(_model.CameraOffset);
             _model.PerfectDrop += (streak) => PerfectDrop?.Invoke(streak);
+            _view.RequestExit += OnRequestExit;
+
         }
 
         public void Initialize()
@@ -57,6 +59,12 @@ namespace FloorHouse.Controller
         public void DropFloor()
         {
             _model.DropFloor();
+        }
+
+        private void OnRequestExit()
+        {
+            if (_view.ConfirmExit())
+                _view.ExitApplication();
         }
 
         public void SetCameraOffset(int offset)

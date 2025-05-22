@@ -14,7 +14,7 @@ namespace FloorHouse.View
         public EndForm(MenuForm menuForm)
         {
             InitializeEnd();
-            _controller = new EndController(this);
+            _controller = new EndController(this, menuForm);
         }
 
         private void InitializeEnd()
@@ -31,6 +31,7 @@ namespace FloorHouse.View
             Controls.Add(retryButton);
             Controls.Add(menuButton);
 
+            gameOverLabel.Left = (ClientSize.Width - gameOverLabel.Width) / 2;
             retryButton.Left = (ClientSize.Width - retryButton.Width) / 2;
             menuButton.Left = (ClientSize.Width - menuButton.Width) / 2;
         }
@@ -43,7 +44,6 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 20),
                 AutoSize = true,
                 Top = 50,
-                Left = (FormW - 520),
                 FlatStyle = FlatStyle.Flat
             };
         }
@@ -55,7 +55,6 @@ namespace FloorHouse.View
                 Text = "Начать заново",
                 Font = new Font("Press Start 2P", 20),
                 Top = 310,
-                Left = 65,
                 AutoSize = true,
                 FlatStyle = FlatStyle.Flat
             };

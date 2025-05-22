@@ -21,8 +21,8 @@ namespace FloorHouse.Controller
 
         public void StartGame()
         {
-            int formWidth = 500;
-            int formHeight = 750;
+            int formWidth = 600;
+            int formHeight = 850;
 
             var model = new HouseGameModel(formWidth, formHeight);
             var mainForm = new View.MainForm(model, (MenuForm)_view);

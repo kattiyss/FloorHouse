@@ -1,3 +1,4 @@
+using FloorHouse.Model;
 using FloorHouse.View;
 
 namespace FloorHouse;
@@ -10,9 +11,13 @@ static class Program
     [STAThread]
     static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
-        // see https://aka.ms/applicationconfiguration.
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MenuForm());
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+
+        var menuForm = new MenuForm();
+        var model = new HouseGameModel(600, 850);
+        var mainForm = new MainForm(model, menuForm);
+
+        Application.Run(menuForm);
     }    
 }

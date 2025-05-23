@@ -1,34 +1,28 @@
-﻿using FloorHouse.Controller;
-using FloorHouse.Model;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static FloorHouse.View.MenuForm;
+using FloorHouse.Controller;
+using FloorHouse.Model;
 
 namespace FloorHouse.View
 {
-    public partial class MenuForm : Form, IMenuView
+    public partial class MenuForm : ThemedForm
     {
         private readonly MenuController _controller;
-        private const int FormW = 600;
-        private const int FormH = 850;
-
-        public interface IMenuView
-        {
-            void HideMenu();
-        }
+        private Button _themeToggleButton;
 
         public MenuForm()
         {
             InitializeMenu();
             _controller = new MenuController(this);
+            ApplyTheme(ThemeModel.CurrentTheme);
         }
 
         private void InitializeMenu()
         {
-            ClientSize = new Size(FormW, FormH);
+            ClientSize = new Size(MenuModel.FormWidth, MenuModel.FormHeight);
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Floor House";
+            Text = MenuModel.GameTitle;
 
             var titleLabel = CreateTitleLabel();
             var playButton = CreatePlayButton();
@@ -40,17 +34,19 @@ namespace FloorHouse.View
             Controls.Add(settingsButton);
             Controls.Add(exitButton);
 
-            titleLabel.Left = (FormW - titleLabel.Width) / 2;
-            playButton.Left = (ClientSize.Width - playButton.Width) / 2;
-            settingsButton.Left = (ClientSize.Width - settingsButton.Width) / 2;
-            exitButton.Left = (ClientSize.Width - exitButton.Width) / 2;
+            CenterControl(titleLabel);
+            CenterControl(playButton);
+            CenterControl(settingsButton);
+            CenterControl(exitButton);
+
+            InitializeThemeButton(500);
         }
 
         private Label CreateTitleLabel()
         {
             return new Label
             {
-                Text = "Floor House",
+                Text = MenuModel.GameTitle,
                 Font = new Font("Press Start 2P", 25),
                 AutoSize = true,
                 Top = 50,
@@ -66,10 +62,10 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 30),
                 AutoSize = true,
                 Top = 290,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
             button.Click += (s, e) => _controller.StartGame();
-            button.FlatAppearance.BorderSize = 0;
             return button;
         }
 
@@ -81,10 +77,10 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 16),
                 Top = 370,
                 AutoSize = true,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
             button.Click += (s, e) => _controller.Settings();
-            button.FlatAppearance.BorderSize = 0;
             return button;
         }
 
@@ -96,16 +92,18 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 15),
                 Top = 430,
                 AutoSize = true,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
             button.Click += (s, e) => _controller.Exit();
-            button.FlatAppearance.BorderSize = 0;
             return button;
         }
 
-        public void HideMenu()
+        private void CenterControl(Control control)
         {
-            Hide();
+            control.Left = (ClientSize.Width - control.Width) / 2;
         }
+
+        public void HideMenu() => Hide();
     }
 }

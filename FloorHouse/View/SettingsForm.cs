@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Forms;
+﻿using FloorHouse.Controller;
+using FloorHouse.Model;
+using System;
 using System.Drawing;
-using FloorHouse.Controller;
+using System.Windows.Forms;
 using Font = System.Drawing.Font;
 
 namespace FloorHouse.View
 {
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : ThemedForm
     {
         private readonly SettingsController controller;
-        private MenuForm _menuForm;
+        private readonly MenuForm menuForm;
         private Label lblScore;
         private Button btnReset;
         private Button btnClose;
@@ -22,10 +18,11 @@ namespace FloorHouse.View
         public SettingsForm(SettingsController controller)
         {
             this.controller = controller;
-            SetupUI();
+            InitializeUI();
+            ApplyTheme(ThemeModel.CurrentTheme);
         }
 
-        private void SetupUI()
+        private void InitializeUI()
         {
             Text = "Настройки";
             Size = new Size(400, 250);
@@ -36,10 +33,10 @@ namespace FloorHouse.View
 
             lblScore = new Label
             {
-                Text = $"Текущий рекорд: {Properties.Settings.Default.HighScore}",
+                Text = $"Текущий рекорд: {controller.GetHighScore()}",
                 Font = new Font("Press Start 2P", 9),
                 AutoSize = true,
-                Location = new Point(45, 40)
+                Location = new Point(80, 40)
             };
             Controls.Add(lblScore);
 
@@ -55,8 +52,7 @@ namespace FloorHouse.View
                 var result = MessageBox.Show("Вы уверены, что хотите сбросить рекорд?", "Подтверждение", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    Properties.Settings.Default.HighScore = 0;
-                    Properties.Settings.Default.Save();
+                    controller.ResetHighScore();
                     lblScore.Text = $"Текущий рекорд: 0";
                 }
             };
@@ -69,11 +65,10 @@ namespace FloorHouse.View
                 Size = new Size(280, 40),
                 Location = new Point(50, 150)
             };
-            btnClose.Click += (s, e) =>
-            {
-                controller.CloseSettings();
-            };
+            btnClose.Click += (s, e) => controller.CloseSettings();
             Controls.Add(btnClose);
+
+            InitializeThemeButton(250);
         }
     }
 }

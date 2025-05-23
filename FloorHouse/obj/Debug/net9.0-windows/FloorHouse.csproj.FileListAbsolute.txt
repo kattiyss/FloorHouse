@@ -1,5 +1,4 @@
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.Properties.Resources.resources
-C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.MainForm.resources
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.MenuForm.resources
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.csproj.GenerateResource.cache
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.GeneratedMSBuildEditorConfig.editorconfig
@@ -19,3 +18,14 @@ C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.ge
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\ref\FloorHouse.dll
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.SettingsForm.resources
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.EndForm.resources
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\doorBlue.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\doorBrick.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\doorStone.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\doorYellow.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\floorBlue.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\floorBrick.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\floorStone.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\floorYellow.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\grass.png
+C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\heart.PNG
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.GameForm.resources

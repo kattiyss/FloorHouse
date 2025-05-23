@@ -11,13 +11,13 @@ static class Program
     [STAThread]
     static void Main()
     {
+        if (Properties.Settings.Default.Theme == (int)ThemeModel.Theme.Dark)
+        {
+            ThemeModel.ToggleTheme();
+        }
+
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
-
-        var menuForm = new MenuForm();
-        var model = new HouseGameModel(600, 850);
-        var mainForm = new MainForm(model, menuForm);
-
-        Application.Run(menuForm);
+        Application.Run(new MenuForm());
     }    
 }

@@ -1,25 +1,25 @@
-﻿using FloorHouse.Controller;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using FloorHouse.Controller;
+using FloorHouse.Model;
 
 namespace FloorHouse.View
 {
-    public partial class EndForm : Form, IEndView
+    public partial class EndForm : ThemedForm
     {
-        private EndController _controller;
-        private const int FormW = 600;
-        private const int FormH = 850;
+        private readonly EndController _controller;
 
         public EndForm(MenuForm menuForm)
         {
             InitializeEnd();
             _controller = new EndController(this, menuForm);
+            ApplyTheme(ThemeModel.CurrentTheme);
         }
 
         private void InitializeEnd()
         {
-            ClientSize = new Size(FormW, FormH);
+            ClientSize = new Size(EndModel.FormWidth, EndModel.FormHeight);
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Game Over";
 
@@ -31,16 +31,16 @@ namespace FloorHouse.View
             Controls.Add(retryButton);
             Controls.Add(menuButton);
 
-            gameOverLabel.Left = (ClientSize.Width - gameOverLabel.Width) / 2;
-            retryButton.Left = (ClientSize.Width - retryButton.Width) / 2;
-            menuButton.Left = (ClientSize.Width - menuButton.Width) / 2;
+            CenterControl(gameOverLabel);
+            CenterControl(retryButton);
+            CenterControl(menuButton);
         }
 
         private Label CreateGameOverLabel()
         {
             return new Label
             {
-                Text = "Игра окончена",
+                Text = EndModel.GameOverText,
                 Font = new Font("Press Start 2P", 20),
                 AutoSize = true,
                 Top = 50,
@@ -56,10 +56,10 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 20),
                 Top = 310,
                 AutoSize = true,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
             button.Click += (s, e) => _controller.Retry();
-            button.FlatAppearance.BorderSize = 0;
             return button;
         }
 
@@ -71,16 +71,18 @@ namespace FloorHouse.View
                 Font = new Font("Press Start 2P", 20),
                 Top = 380,
                 AutoSize = true,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
             button.Click += (s, e) => _controller.GoToMenu();
-            button.FlatAppearance.BorderSize = 0;
             return button;
         }
 
-        public void CloseEnd()
+        private void CenterControl(Control control)
         {
-            this.Close();
+            control.Left = (ClientSize.Width - control.Width) / 2;
         }
+
+        public void CloseEnd() => Close();
     }
 }

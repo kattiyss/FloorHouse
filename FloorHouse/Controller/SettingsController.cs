@@ -1,9 +1,5 @@
-﻿using FloorHouse.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FloorHouse.Model;
+using FloorHouse.View;
 using System.Windows.Forms;
 
 namespace FloorHouse.Controller
@@ -12,12 +8,16 @@ namespace FloorHouse.Controller
     {
         private readonly SettingsForm _view;
         private readonly MenuForm _menuView;
+        private readonly SettingsModel _model;
 
         public SettingsController(MenuForm menuForm)
         {
             _menuView = menuForm;
+            _model = new SettingsModel();
             _view = new SettingsForm(this);
         }
+
+        public int GetHighScore() => _model.HighScore;
 
         public void Show()
         {
@@ -26,9 +26,7 @@ namespace FloorHouse.Controller
 
         public void ResetHighScore()
         {
-            Properties.Settings.Default.HighScore = 0;
-            Properties.Settings.Default.Save();
-            MessageBox.Show("Рекорд сброшен!");
+            _model.ResetHighScore();
         }
 
         public void CloseSettings()

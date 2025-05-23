@@ -1,25 +1,15 @@
 ﻿using FloorHouse.Model;
 using FloorHouse.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static FloorHouse.View.MainForm;
 
 namespace FloorHouse.Controller
 {
-    public interface IEndView
-    {
-        void CloseEnd();
-    }
-
     public class EndController
     {
-        private readonly IEndView _view;
-        private MenuForm _menuForm;
+        private readonly EndForm _view;
+        private readonly MenuForm _menuForm;
 
-        public EndController(IEndView view, MenuForm menuForm)
+        public EndController(EndForm view, MenuForm menuForm)
         {
             _view = view;
             _menuForm = menuForm;
@@ -27,17 +17,15 @@ namespace FloorHouse.Controller
 
         public void Retry()
         {
-            var model = new HouseGameModel(600, 850);
-            var mainForm = new MainForm(model, _menuForm);
-
+            var model = new GameModel(EndModel.FormWidth, EndModel.FormHeight);
+            var mainForm = new GameForm(model, _menuForm);
             mainForm.Show();
             _view.CloseEnd();
         }
 
         public void GoToMenu()
         {
-            var menuForm = new View.MenuForm();
-            menuForm.Show();
+            _menuForm.Show();
             _view.CloseEnd();
         }
     }

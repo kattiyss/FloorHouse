@@ -1,4 +1,5 @@
 ﻿using FloorHouse.Model;
+using FloorHouse.Model.Dtos;
 using FloorHouse.View;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace FloorHouse.Controller
 {
     public class GameController
     {
-        private readonly HouseGameModel _model;
+        private readonly GameModel _model;
         private readonly IMainView _view;
 
         public int Lives => _model.Lives;
@@ -25,7 +26,7 @@ namespace FloorHouse.Controller
         public event Action<int> UpdateLives;
         public event Action<int> PerfectDrop;
 
-        public GameController(HouseGameModel model, IMainView view)
+        public GameController(GameModel model, IMainView view)
         {
             _model = model;
             _view = view;
@@ -51,7 +52,7 @@ namespace FloorHouse.Controller
             _view.UpdateDebris(_model.DebrisList);
         }
 
-        public (Color[] colors, Point[] starPositions, int[] starSizes, float starOpacity) GetBackgroundData()
+        public (ColorDto[] colors, PointDto[] starPositions, int[] starSizes, float starOpacity) GetBackgroundData()
         {
             return _model.GetBackgroundData();
         }

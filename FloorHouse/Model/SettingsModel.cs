@@ -1,6 +1,4 @@
-﻿using System.Configuration;
-
-namespace FloorHouse.Model
+﻿namespace FloorHouse.Model
 {
     public class SettingsModel
     {

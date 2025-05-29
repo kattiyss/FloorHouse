@@ -1,8 +1,5 @@
 ﻿using FloorHouse.Controller;
 using FloorHouse.Model;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using Font = System.Drawing.Font;
 
 namespace FloorHouse.View
@@ -10,7 +7,6 @@ namespace FloorHouse.View
     public partial class SettingsForm : ThemedForm
     {
         private readonly SettingsController controller;
-        private readonly MenuForm menuForm;
         private Label lblScore;
         private Button btnReset;
         private Button btnClose;

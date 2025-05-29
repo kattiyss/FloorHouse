@@ -1,9 +1,6 @@
 ﻿using FloorHouse.Model;
 using FloorHouse.Model.Dtos;
 using FloorHouse.View;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace FloorHouse.Controller
 {

@@ -29,3 +29,4 @@ C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\floorY
 C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\grass.png
 C:\Users\kattiyss\source\repos\FloorHouse\bin\Debug\net9.0-windows\Themes\heart.PNG
 C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.GameForm.resources
+C:\Users\kattiyss\source\repos\FloorHouse\obj\Debug\net9.0-windows\FloorHouse.View.ThemedForm.resources

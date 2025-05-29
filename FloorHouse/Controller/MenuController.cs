@@ -1,7 +1,5 @@
 ﻿using FloorHouse.Model;
 using FloorHouse.View;
-using System;
-using System.Windows.Forms;
 
 namespace FloorHouse.Controller
 {

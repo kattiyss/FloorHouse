@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using FloorHouse.Controller;
+﻿using FloorHouse.Controller;
 using FloorHouse.Model;
 
 namespace FloorHouse.View

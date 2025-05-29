@@ -1,15 +1,6 @@
 ﻿using FloorHouse.Controller;
 using FloorHouse.Model;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Xml.Linq;
-using MethodInvoker = System.Windows.Forms.MethodInvoker;
 using Timer = System.Windows.Forms.Timer;
 
 namespace FloorHouse.View
@@ -48,7 +39,7 @@ namespace FloorHouse.View
 
         public GameForm(GameModel model, MenuForm menuForm)
         {
-            InitializeComponent();
+            InitializeUI();
 
             ThemeModel.Initialize();
             ThemeModel.ThemeChanged += ApplyTheme;
@@ -104,7 +95,7 @@ namespace FloorHouse.View
             ThemeModel.ThemeChanged -= ApplyTheme;
             base.OnFormClosed(e);
         }
-        private void InitializeComponent()
+        private void InitializeUI()
         {
             ClientSize = new Size(600, 850);
             StartPosition = FormStartPosition.CenterScreen;
@@ -297,7 +288,7 @@ namespace FloorHouse.View
                 g.FillRectangle(bgBrush, ClientRectangle);
             }
 
-            // Рисуем звезды если нужно
+            // Рисуем звезды
             if (bgData.starOpacity > 0)
             {
                 using (var starBrush = new SolidBrush(Color.FromArgb((int)(200 * bgData.starOpacity), Color.White)))
@@ -383,22 +374,6 @@ namespace FloorHouse.View
                 g.DrawString(text, new Font("Press Start 2P", 16, FontStyle.Bold), Brushes.Gold, x, y);
 
                 _perfectDisplayCounter--;
-            }
-        }
-
-        private void DrawStars(Graphics g, Point[] positions, int[] sizes, float opacity)
-        {
-            int visibleStars = (int)(positions.Length * opacity);
-            using (var starBrush = new SolidBrush(Color.FromArgb((int)(200 * opacity), Color.White)))
-            {
-                for (int i = 0; i < visibleStars; i++)
-                {
-                    int x = positions[i].X;
-                    int y = (positions[i].Y - (int)(_cameraOffset * 0.3f)) % (GetFormHeight() * 2);
-                    if (y < -10) y += GetFormHeight() * 2; // Чтобы звезды появлялись сверху
-
-                    g.FillEllipse(starBrush, x, y, sizes[i], sizes[i]);
-                }
             }
         }
     }

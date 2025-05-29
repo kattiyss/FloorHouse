@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using FloorHouse.Model;
+﻿using FloorHouse.Model;
 
 namespace FloorHouse.View
 {

@@ -1,7 +1,4 @@
 ﻿using FloorHouse.Model.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace FloorHouse.Model
 {

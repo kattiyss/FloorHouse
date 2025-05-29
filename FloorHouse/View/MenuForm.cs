@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using FloorHouse.Controller;
+﻿using FloorHouse.Controller;
 using FloorHouse.Model;
 
 namespace FloorHouse.View
@@ -9,7 +6,6 @@ namespace FloorHouse.View
     public partial class MenuForm : ThemedForm
     {
         private readonly MenuController _controller;
-        private Button _themeToggleButton;
 
         public MenuForm()
         {
@@ -99,7 +95,7 @@ namespace FloorHouse.View
             return button;
         }
 
-        private void CenterControl(Control control)
+        private new void CenterControl(Control control)
         {
             control.Left = (ClientSize.Width - control.Width) / 2;
         }
